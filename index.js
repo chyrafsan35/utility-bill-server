@@ -71,6 +71,12 @@ async function run() {
             res.send(result)
         })
 
+        app.get('/usersBills', async (req, res)=>{
+            const cursor = usersBillsColl.find();
+            const result = await cursor.toArray();
+            res.send(result)
+        })
+
         app.post('/bills', async (req, res) => {
             const newBill = req.body;
             const result = await billsColl.insertOne(newBill);
