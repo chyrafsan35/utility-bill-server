@@ -36,7 +36,7 @@ async function run() {
         const db = client.db('utility_db');
         const billsColl = db.collection('bills');
         const usersColl = db.collection('users');
-        const myBillsColl = db.collection('myBills')
+        const usersBillsColl = db.collection('usersBills')
 
         app.post('/users', async (req, res) => {
             const newUser = req.body;
@@ -77,9 +77,9 @@ async function run() {
             res.send(result)
         })
 
-        app.post('/myBills', async (req, res)=>{
+        app.post('/usersBills', async (req, res)=>{
             const addedBill = req.body;
-            const result = await myBillsColl.insertOne(addedBill);
+            const result = await usersBillsColl.insertOne(addedBill);
             res.send(result);
         })
 
