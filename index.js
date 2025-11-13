@@ -60,7 +60,7 @@ async function run() {
 
         app.get('/bills/:id', async (req, res) => {
             const id = req.params.id;
-            const query = { _id : new ObjectId(id) }
+            const query = { _id: new ObjectId(id) }
             const result = await billsColl.findOne(query)
             res.send(result)
         })
@@ -71,11 +71,11 @@ async function run() {
             res.send(result)
         })
 
-        app.get('/usersBills', async (req, res)=>{
+        app.get('/usersBills', async (req, res) => {
 
             const email = req.query.email;
             const query = {};
-            if(email){
+            if (email) {
                 query.email = email;
             }
 
@@ -84,12 +84,12 @@ async function run() {
             res.send(result)
         })
 
-        app.patch('/usersBills', async (req, res)=>{
-            const email = req.query.email;
+        app.patch('/usersBills/:id', async (req, res) => {
+            const billId = req.params.id;
             const updatedBill = req.body;
-            const query = { email : email};
+            const query = { _id: new ObjectId(billId) };
             const updateResult = {
-                $set : updatedBill
+                $set: updatedBill
             };
 
             const result = await usersBillsColl.updateOne(query, updateResult);
@@ -102,7 +102,7 @@ async function run() {
             res.send(result)
         })
 
-        app.post('/usersBills', async (req, res)=>{
+        app.post('/usersBills', async (req, res) => {
             const addedBill = req.body;
             const result = await usersBillsColl.insertOne(addedBill);
             res.send(result);
