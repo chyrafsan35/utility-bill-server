@@ -96,6 +96,13 @@ async function run() {
             res.send(result)
         })
 
+        app.delete('/usersBills/:id', async (req, res) => {
+            const billId = req.params.id;
+            const query = { _id: new ObjectId(billId) };
+            const result = await usersBillsColl.deleteOne(query);
+            res.send(result)
+        });
+
         app.post('/bills', async (req, res) => {
             const newBill = req.body;
             const result = await billsColl.insertOne(newBill);
