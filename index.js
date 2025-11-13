@@ -84,6 +84,17 @@ async function run() {
             res.send(result)
         })
 
+        app.patch('/usersBills', async (req, res)=>{
+            const email = req.params.email;
+            const query = { email : email};
+            const updateResult = {
+                $set : updatedBill
+            };
+
+            const result = await usersBillsColl.updateOne(query, updateResult);
+            res.send(result)
+        })
+
         app.post('/bills', async (req, res) => {
             const newBill = req.body;
             const result = await billsColl.insertOne(newBill);
