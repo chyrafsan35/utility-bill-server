@@ -72,7 +72,14 @@ async function run() {
         })
 
         app.get('/usersBills', async (req, res)=>{
-            const cursor = usersBillsColl.find();
+
+            const email = req.query.email;
+            const query = {};
+            if(email){
+                query.email = email;
+            }
+
+            const cursor = usersBillsColl.find(query);
             const result = await cursor.toArray();
             res.send(result)
         })
