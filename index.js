@@ -36,6 +36,7 @@ async function run() {
         const db = client.db('utility_db');
         const billsColl = db.collection('bills');
         const usersColl = db.collection('users');
+        const myBillsColl = db.collection('myBills')
 
         app.post('/users', async (req, res) => {
             const newUser = req.body;
@@ -74,6 +75,12 @@ async function run() {
             const newBill = req.body;
             const result = await billsColl.insertOne(newBill);
             res.send(result)
+        })
+
+        app.post('/myBills', async (req, res)=>{
+            const addedBill = req.body;
+            const result = await myBillsColl.insertOne(addedBill);
+            res.send(result);
         })
 
         app.patch('/bills/:id', async (req, res) => {
