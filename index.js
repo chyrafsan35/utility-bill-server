@@ -85,7 +85,8 @@ async function run() {
         })
 
         app.patch('/usersBills', async (req, res)=>{
-            const email = req.params.email;
+            const email = req.query.email;
+            const updatedBill = req.body;
             const query = { email : email};
             const updateResult = {
                 $set : updatedBill
