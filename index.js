@@ -68,9 +68,17 @@ async function run() {
         })
 
         app.get('/bills', async (req, res) => {
-            const { limit = 0, skip = 0 } = req.query;
+            const { limit = 0, skip = 0, sort = "date", order = "desc", search = "" } = req.query;
+            const sortOption = {};
 
-            const cursor = billsColl.find().limit(Number(limit)).skip(Number(skip));
+            let query = {};
+            if(search){
+                query.title = { $regex : search, $options : "i" };
+            }
+
+            sortOption[sort || "date"] = order === 'asc' ? 1 : -1 ;
+
+            const cursor = billsColl.find(query).sort(sortOption).limit(Number(limit)).skip(Number(skip));
             const bills = await cursor.toArray();
             const count = await billsColl.countDocuments();
             res.send({bills, total:count})
