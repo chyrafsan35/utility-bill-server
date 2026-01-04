@@ -68,9 +68,12 @@ async function run() {
         })
 
         app.get('/bills', async (req, res) => {
-            const cursor = billsColl.find();
-            const result = await cursor.toArray();
-            res.send(result)
+            const { limit = 0, skip = 0 } = req.query;
+
+            const cursor = billsColl.find().limit(Number(limit)).skip(Number(skip));
+            const bills = await cursor.toArray();
+            const count = await billsColl.countDocuments();
+            res.send({bills, total:count})
         })
 
         app.get('/reviews', async (req, res) => {
