@@ -32,12 +32,14 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
+        
 
         const db = client.db('utility_db');
         const billsColl = db.collection('bills');
         const usersColl = db.collection('users');
         const usersBillsColl = db.collection('usersBills')
+        const reviewsCollection = db.collection('reviews')
+        const issuesCollection = db.collection('issues')
 
         app.post('/users', async (req, res) => {
             const newUser = req.body;
@@ -53,9 +55,33 @@ async function run() {
             }
         })
 
+        app.get('/issues', async(req,res)=>{
+            const cursor = issuesCollection.find();
+            const result = await cursor.toArray();
+            res.send(result)
+        })
+
+        app.post('/issues', async(req,res)=>{
+            const issue = req.body;
+            const result = await issuesCollection.insertOne(issue);
+            res.send(result)
+        })
+
         app.get('/bills', async (req, res) => {
             const cursor = billsColl.find();
             const result = await cursor.toArray();
+            res.send(result)
+        })
+
+        app.get('/reviews', async (req, res) => {
+            const cursor = reviewsCollection.find();
+            const result = await cursor.toArray();
+            res.send(result)
+        })
+
+        app.post('/reviews', async(req,res)=>{
+            const review = req.body;
+            const result = await reviewsCollection.insertOne(review);
             res.send(result)
         })
 
@@ -135,7 +161,7 @@ async function run() {
         })
 
         // Send a ping to confirm a successful connection
-        await client.db("admin").command({ ping: 1 });
+        // await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
 
