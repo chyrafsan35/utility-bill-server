@@ -153,6 +153,13 @@ async function run() {
             res.send(result);
         })
 
+        app.get('/usersBills/:email', async(req,res)=>{
+            const email = req.params.email;
+            const cursor = usersBillsColl.find({ email: email });
+            const result = await cursor.toArray();
+            res.send(result)
+        })
+
         app.patch('/bills/:id', async (req, res) => {
             const id = req.params.id;
             const updateBill = req.body;
