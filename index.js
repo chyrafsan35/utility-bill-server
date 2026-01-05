@@ -41,6 +41,12 @@ async function run() {
         const reviewsCollection = db.collection('reviews')
         const issuesCollection = db.collection('issues')
 
+        app.get('/users/:email', async(req,res)=>{
+            const email = req.params.email;
+            const result = await usersColl.findOne( { email : email });
+            res.send(result);
+        })
+
         app.post('/users', async (req, res) => {
             const newUser = req.body;
 
@@ -53,6 +59,17 @@ async function run() {
                 const result = await usersColl.insertOne(newUser);
                 res.send(result)
             }
+        })
+
+        app.patch('/users/:email', async (req, res) => {
+            const email = req.params.email;
+            const updatedProfile = req.body;
+
+            const result = await usersColl.updateOne(
+                {email},
+                {$set: updatedProfile}
+            );
+            res.send(result)
         })
 
         app.get('/issues', async(req,res)=>{
